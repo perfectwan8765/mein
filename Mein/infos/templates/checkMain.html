@@ -1,0 +1,31 @@
+{% extends 'main.html' %}
+
+{% block pagination %}
+        {% if is_paginated %}
+          <nav class="blog-pagination" style="text-align:center;">
+            {% if page_obj.has_previous %}
+              <a class="btn btn-outline-default"
+                 href="?page={{ page_obj.previous_page_number}}{% if sub %}&sub={{ sub }}{% endif %}"><<</a>
+            {% else %}
+            <a class="btn btn-outline-default"><<</a>
+            {% endif %}
+
+            {% for i in page_range %}
+              {% if page_obj.number == i %}
+              <a class="btn btn-outline-primary active">{{ i }}</a>
+              {% else %}
+                <a class="btn btn-outline-primary" href="?page={{i}}{% if sub %}&sub={{ sub }}{% endif %}">{{ i }}</a>
+              {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+              <a class="btn btn-outline-default" href="?page={{ page_obj.next_page_number}}{% if sub %}&sub={{ sub }}{% endif %}">>></a>
+            {% else %}
+            <a class="btn btn-outline-default">>></a>
+            {% endif %}
+
+          </nav>
+        {% endif %}
+
+
+{% endblock pagination %}

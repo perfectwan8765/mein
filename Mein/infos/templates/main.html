@@ -15,6 +15,7 @@
               서울 {% if region %}{{ region }}{% else %}강남구{% endif %}
               {% endif %}
             </h5>
+            {{ page_obj.number }} of {{ max_index }}
           </div>
 
           {% for item in  main_list %}
@@ -49,6 +50,7 @@
           </div> <!-- end card-->
           {% endfor %}
 
+          {% block pagination %}
           <!-- pagination -->
           {% if is_paginated %}
           <nav class="blog-pagination" style="text-align:center;">
@@ -87,6 +89,7 @@
           </nav>
           {% endif %}
           <!--end pagination-->
+          {% endblock pagination %}
 
         </div><!-- /.blog-main -->
 
@@ -103,23 +106,28 @@
           <!-- end [about]-->
 
           <!-- [checkbox_list_1] special treatment-->
+          <form id="divForm" method="get" action="{% url 'infos:div' %}">
           <div class="p-3 bg-light">
             <h4 class="text-danger" data-toggle="popover" data-trigger="hover" data-placement="top"
                data-content="특수진료 가능한 병원만 보고싶으면 체크!">특수진료</h4>
-              <form>
                 <div class="row">
-                  <div class="col"><input class="mr-1" type="checkbox" id="emergency"/><label for="emergency">응급실</label></div>
-                  <div class="col"><input class="mr-1" type="checkbox" id="limbs"/><label for="limbs">사지접합</label></div>
+                  <div class="col"><input class="mr-1" type="checkbox" name="emergency" value="1" id="emergency" {% if emergency %} checked {% endif %}/>
+                    <label for="emergency">응급실</label></div>
+                  <div class="col"><input class="mr-1" type="checkbox" name="limbs" value="1" id="limbs" {% if limbs %} checked {% endif %}/>
+                    <label for="limbs">사지접합</label></div>
                 </div>
                 <div class="row">
-                  <div class="col"><input class="mr-1" type="checkbox" id="newborn"/><label for="newborn">신생아</label></div>
-                  <div class="col"><input class="mr-1" type="checkbox" id="pregnant"/><label for="pregnant">조산산모</label></div>
+                  <div class="col"><input class="mr-1" type="checkbox" name="newborn" value="1" id="newborn" {% if newborn %} checked {% endif %}/>
+                    <label for="newborn">신생아</label></div>
+                  <div class="col"><input class="mr-1" type="checkbox" name="pregnent" value="1" id="pregnent"{% if pregnent %} checked {% endif %}/>
+                    <label for="pregnent">조산산모</label></div>
                 </div>
                 <div class="row">
-                  <div class="col"><input class="mr-1" type="checkbox" id="burn"/><label for="burn">화상</label></div>
-                  <div class="col"><input class="mr-1" type="checkbox" id="dialysis"/><label for="dialysis">응급투석</label></div>
+                  <div class="col"><input class="mr-1" type="checkbox" name="burn" value="1" id="burn" {% if burn %} checked {% endif %}/>
+                    <label for="burn">화상</label></div>
+                  <div class="col"><input class="mr-1" type="checkbox" name="dialysis" value="1" id="dialysis" {% if dialysis %} checked {% endif %}/>
+                    <label for="dialysis">응급투석</label></div>
                 </div>
-              </form>
           </div>
           <!-- end [checkbox_list_1]-->
 
@@ -128,34 +136,31 @@
             <h4 class="text-danger" data-toggle="popover" data-trigger="hover" data-placement="top"
                data-content="휴일진료 가능한 병원만 보고싶으면 체크!">주말휴일진료</h4>
             <ol class="list-unstyled mb-0">
-              <form>
-              <li><input class="mr-1" type="checkbox" id="saturday"/><label for="saturday">토요일</label></li>
-              <li><input class="mr-1" type="checkbox" id="sunday"/><label for="sunday">일요일</label></li>
-              <li><input class="mr-1" type="checkbox" id="holiday"/><label for="holiday">공휴일</label></li>
-              </form>
+              <li><input class="mr-1" type="checkbox" name="saturday" value="1" id="saturday"/><label for="saturday">토요일</label></li>
+              <li><input class="mr-1" type="checkbox" name="sunday" value="1" id="sunday"/><label for="sunday">일요일</label></li>
+              <li><input class="mr-1" type="checkbox" name="holiday" value="1" id="holiday"/><label for="holiday">공휴일</label></li>
             </ol>
           </div>
           <!-- end [checkbox_list_2]-->
-
+            <input type="hidden" name="sub">
+          </form>
           <!-- [checkbox_list_3] available holiday-->
           <div class="mt-3 p-3 bg-light">
             <h4 class="text-danger" data-toggle="popover" data-trigger="hover" data-placement="top"
                data-content="해당 진료과목 운영 병원만 보고싶으면 체크!">진료과목</h4>
             <ol class="list-unstyled mb-0">
-              <form>
-              <li><input class="mr-1" type="checkbox" /><label>치과</label></li>
-              <li><input class="mr-1" type="checkbox" /><label >내과</label></li>
-              <li><input class="mr-1" type="checkbox" /><label >산부인과</label></li>
-              <li><input class="mr-1" type="checkbox" /><label >성형외과</label></li>
-              <li><input class="mr-1" type="checkbox" /><label >정형외과</label></li>
-              <li><input class="mr-1" type="checkbox" /><label >신경외과</label></li>
-              <li><input class="mr-1" type="checkbox" /><label >소아청소년과</label></li>
-              <li><input class="mr-1" type="checkbox" /><label >피부과</label></li>
-              <li><input class="mr-1" type="checkbox" /><label >안과</label></li>
-              <li><input class="mr-1" type="checkbox" /><label >정신건강의학과</label></li>
-              <li><input class="mr-1" type="checkbox" /><label >비뇨기과</label></li>
-              <li><input class="mr-1" type="checkbox" /><label >한방내과</label></li>
-              </form>
+              <li><input class="mr-1" type="checkbox" name="subject" value="치과" {% if '치과' in sub %} checked {% endif %} /><label>치과</label></li>
+              <li><input class="mr-1" type="checkbox" name="subject" value="내과" {% if '내과' in sub %} checked {% endif %} /><label >내과</label></li>
+              <li><input class="mr-1" type="checkbox" name="subject" value="산부인과" {% if '산부인과' in sub %} checked {% endif %} /><label >산부인과</label></li>
+              <li><input class="mr-1" type="checkbox" name="subject" value="성형외과" {% if '성형외과' in sub %} checked {% endif %} /><label >성형외과</label></li>
+              <li><input class="mr-1" type="checkbox" name="subject" value="정형외과" {% if '정형외과' in sub %} checked {% endif %} /><label >정형외과</label></li>
+              <li><input class="mr-1" type="checkbox" name="subject" value="신경외과" {% if '신경외과' in sub %} checked {% endif %} /><label >신경외과</label></li>
+              <li><input class="mr-1" type="checkbox" name="subject" value="소아청소년과" {% if '소아청소년과' in sub %} checked {% endif %} /><label >소아청소년과</label></li>
+              <li><input class="mr-1" type="checkbox" name="subject" value="피부과" {% if '피부과' in sub %} checked {% endif %} /><label >피부과</label></li>
+              <li><input class="mr-1" type="checkbox" name="subject" value="안과" {% if '안과' in sub %} checked {% endif %} /><label >안과</label></li>
+              <li><input class="mr-1" type="checkbox" name="subject" value="정신"{% if '정신' in sub %} checked {% endif %} /><label >정신건강의학과</label></li>
+              <li><input class="mr-1" type="checkbox" name="subject" value="비뇨" {% if '비뇨' in sub %} checked {% endif %} /><label >비뇨기과</label></li>
+              <li><input class="mr-1" type="checkbox" name="subject" value="한방" {% if '한방' in sub %} checked {% endif %} /><label >한방과</label></li>
             </ol>
           </div>
           <!-- end [checkbox_list_3]-->
@@ -172,6 +177,24 @@
 
 {% block soruceAdd %}
 <script>
+$("input[type=checkbox]").on("click", function(){
+    if($("input[type=checkbox]:checkbox:checked").length == 0){
+      alert('체크');
+      window.location.href="{% url 'infos:index' %}";
+    }
+
+    if($("input[name=subject]:checkbox:checked").length != 0){
+      var array = [];
+      $("input[name=subject]:checkbox:checked").each(function(){
+         array.push($(this).val());
+      });
+      var subject = array.join(',');
+      $("input[name=sub]").val(subject);
+    }
+
+    $("#divForm").submit();
+});
+
 function getLocation() {
   if (navigator.geolocation) { // GPS를 지원하면
     navigator.geolocation.getCurrentPosition(function(position) {
@@ -197,6 +220,7 @@ var map = new naver.maps.Map('map', {
             position: naver.maps.Position.TOP_RIGHT
         }
 });
+{% if main_list %}
 var lat=0;
 var lon=0;
 {% for item in main_list %}
@@ -257,5 +281,6 @@ var marker = new naver.maps.Marker({
     });
 
 {% endfor %}
+{% endif %}
 </script>
 {% endblock soruceAdd %}

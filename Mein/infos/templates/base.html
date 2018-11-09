@@ -99,13 +99,14 @@
 
       <!--Main map-->
       {% block mapname %}
-      <h3>
+      <h3 class="d-inline">
         {% if topic %}
         검색결과 : {{ topic }}-{{ keyword }}
         {% else %}
         서울 {% if region %}{{ region }}{% else %}강남구{% endif %} 지역 지도
         {% endif %}
       </h3>
+      <div class="float-right"><img id="marker_info" src="{% static 'img/marker_hs2.png'%}"> 마커를 클릭하면 해당 병원정보를 볼 수 있습니다!</div>
       {% endblock mapname %}
 
       <div id="map" class="mb-4 rounded" style="height:400px;">
@@ -130,6 +131,8 @@
     <link rel="stylesheet" href="{% static 'bootEx/bootstrap.min.css' %}">
     <script src="{% static 'bootEx/bootstrap.min.js' %}"></script>
     <script src="{% static 'bootEx/holder.js' %}"></script>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.5.0/css/all.css" integrity="sha384-B4dIYHKNBt8Bc12p+WXckhzcICo0wtJAoU8YZTY5qE0Id1GSseTk6S+L3BlXeVIU" crossorigin="anonymous">
+
     {% block soruceAdd %} {% endblock soruceAdd %}
     <script>
       Holder.addTheme('thumb', {
@@ -144,5 +147,12 @@
                                             function(){$(this).css("cursor", "none")});
       });
     </script>
+    <style>
+      #marker_info{
+        border: 0px solid transparent;
+        width: 25px;
+        height: 25px;
+      }
+    </style>
   </body>
 </html>
