@@ -1,0 +1,148 @@
+{% load static %}
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <title>Mein</title>
+
+    <!-- Custom styles for this template -->
+    <link href="https://fonts.googleapis.com/css?family=Playfair+Display:700,900" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Jua" rel="stylesheet">
+    <style>
+        div{
+          font-family: 'Jua', 'Playfair';
+        }
+       a{
+          text-decoration: none !important;
+        }
+    </style>
+    <script type="text/javascript" src="https://openapi.map.naver.com/openapi/v3/maps.js?clientId=lMn2JmpHyO4i3aU9LiHe&submodules=geocoder"></script>
+  </head>
+
+  <body>
+
+    <div class="container">
+      <header class="blog-header py-3">
+        <div class="row flex-nowrap justify-content-between align-items-center">
+          <div class="col-4 pt-1">
+            <span>Medical + Information</span>
+          </div>
+          <div class="col-4 text-center">
+            <h2><a class="blog-header-logo text-primary" href="#">Mein</a></h2>
+          </div>
+          <div class="col-4 d-flex justify-content-end align-items-center">
+            <a class="text-muted" href="#" data-toggle="modal" data-target="#searchModal">
+              <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="mx-3"><circle cx="10.5" cy="10.5" r="7.5"></circle><line x1="21" y1="21" x2="15.8" y2="15.8"></line></svg>
+            </a>
+            <a class="btn btn-sm btn-outline-secondary" href="#" data-toggle="modal" data-target="#regionListModal">Region List</a>
+            {% block listbtn %} {% endblock listbtn %}
+          </div>
+        </div>
+      </header>
+
+      <!-- searchModal -->
+      <div class="modal fade" id="searchModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Search</h5>
+            </div>
+            <form action="{% url 'infos:search' %}" method="get">
+            <div class="modal-body">
+             <div class="input-group mb-3">
+              <div class="input-group-prepend">
+                 <select name="topic" class="custom-select">
+                  <option selected>--분류--</option>
+                  <option value="name">병원명</option>
+                  <option value="addr">주소</option>
+                  <option value="tel">전화번호</option>
+                 </select>
+              </div>
+              <input name="keyword" type="text" class="form-control" placeholder="Keyword input" required>
+               <div class="input-group-append">
+                  <input class="btn btn-outline-secondary" type="submit" value="검색"/>
+               </div>
+              </div>
+            </div>
+            </form>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end searchModal -->
+
+      <!-- searchModal -->
+      <div class="modal fade" id="regionListModal" tabindex="-1" aria-hidden="true">
+        <div class="modal-dialog" role="document">
+          <div class="modal-content">
+            <div class="modal-header">
+              <h5 class="modal-title">Region List</h5>
+            </div>
+            <div class="modal-body">
+              <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '강남구' %}" >서울 강남구</a>
+              <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '서초구' %}" >서울 서초구</a>
+              <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '송파구' %}" >서울 송파구</a>
+              <a class="btn btn-outline-secondary mb-2 mb-2" href="{% url 'infos:list' '종로구' %}" >서울 종로구</a>
+              <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '강서구' %}" >서울 강서구</a>
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end searchModal -->
+
+      <!--Main map-->
+      {% block mapname %}
+      <h3>
+        {% if topic %}
+        검색결과 : {{ topic }}-{{ keyword }}
+        {% else %}
+        서울 {% if region %}{{ region }}{% else %}강남구{% endif %} 지역 지도
+        {% endif %}
+      </h3>
+      {% endblock mapname %}
+
+      <div id="map" class="mb-4 rounded" style="height:400px;">
+      </div>
+      <!--end Main map-->
+
+    {% block content %}
+    {% endblock content %}
+
+    <footer class="blog-footer mt-4">
+      <div class="jumbotron p-3 p-md-5 rounded">
+        <h3>Please Contact Us!!!!</h3>
+        <h4>This version is Seoul_1</h4>
+      </div>
+    </footer>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="http://code.jquery.com/jquery-3.1.1.min.js"></script>
+    <script src="{% static 'bootEx/popper.js' %}"></script>
+    <link rel="stylesheet" href="{% static 'bootEx/bootstrap.min.css' %}">
+    <script src="{% static 'bootEx/bootstrap.min.js' %}"></script>
+    <script src="{% static 'bootEx/holder.js' %}"></script>
+    {% block soruceAdd %} {% endblock soruceAdd %}
+    <script>
+      Holder.addTheme('thumb', {
+        bg: '#55595c',
+        fg: '#eceeef',
+        text: 'Thumbnail'
+      });
+
+      $(function () {
+        $('[data-toggle="popover"]').popover()
+        $('[data-toggle="popover"]').hover(function(){$(this).css("cursor", "pointer")},
+                                            function(){$(this).css("cursor", "none")});
+      });
+    </script>
+  </body>
+</html>

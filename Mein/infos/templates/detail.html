@@ -1,0 +1,195 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block listbtn %}
+<a class="ml-2 btn btn-sm btn-outline-secondary" href="{% url 'infos:index' %}">Previous List</a>
+{% endblock listbtn %}
+
+{% block mapname %}
+    <h3 class="ml-3">{{ maininfo.name }} 위치</h3>
+{% endblock mapname %}
+
+{% block content %}
+    <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+        <div class="card-body flex-column align-items-start">
+
+            <h3 class="mb-2 mr-2 d-inline">{{ maininfo.name }}</h3>
+            <a class="text-info btn btn-sm btn-outline-info" target="_blank" href="http://www.naver.com" >해당사이트</a>
+
+            <div class="row">
+                <div class="col border-right">
+                    <div class="text-info mt-1">분류</div>
+                    <div>{{ maininfo.div }}</div>
+                    <div class="text-info mt-1">진로과목</div>
+                    <div>{{ maininfo.subject }}</div>
+                    <div class="text-info mt-1">주소</div>
+                    <div>{{ maininfo.addr }}</div>
+                    <div class="row mt-1">
+                        <div class="col">
+                            <div class="text-info">전화번호</div>
+                            <div>{{ maininfo.tel }}</div>
+                        </div>
+                        <div class="col">
+                        <div class="text-danger">응급실 번호</div>
+                        <div>{{ maininfo.etel }}</div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="col ml-2">
+                    <div class="text-info">진로시간</div>
+                    <div class="row">
+                        <div class="col-5">
+                            {% for sub in maininfo.subinfo_set.all %}
+                            <span class="mr-1">월요일</span>{% if sub.mondayStart %}{{ sub.mondayStart }}-{{ sub.mondayEnd}}
+                            {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
+                            <span class="mr-1">화요일</span>{% if sub.tuesdayStart %}{{ sub.tuesdayStart }}-{{ sub.tuesdayEnd}}
+                            {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
+                            <span class="mr-1">수요일</span>{% if sub.wednesdayStart %}{{ sub.wednesdayStart }}-{{ sub.wednesdayEnd}}
+                            {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
+                            <span class="mr-1">목요일</span>{% if sub.thursdayStart %}{{ sub.thursdayStart }}-{{ sub.thursdayEnd}}
+                            {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
+                            <span class="mr-1">금요일</span>{% if sub.fridayStart %}{{ sub.fridayStart }}-{{ sub.fridayEnd}}
+                            {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
+                        </div>
+                        <div class="col-7">
+                            <span class="mr-1">토요일</span>{% if sub.saturdayStart %}{{ sub.saturdayStart }}-{{ sub.saturdayEnd}}
+                            {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
+                            <span class="mr-1">일요일</span>{% if sub.sundayStart %}{{ sub.sundayStart }}-{{ sub.sundayEnd}}
+                            {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
+                            <span class="mr-1">공휴일</span>{% if sub.holidayStart %}{{ sub.holidayStart }}-{{ sub.holidayEnd}}
+                            {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
+                            {% endfor %}
+                        </div>
+                    </div>
+
+                    <div class="text-info mt-3">추가정보</div>
+                    <div>{% if maininfo.info %}{{ maininfo.info }}{% else %}없음{%endif%}</div>
+                </div> <!-- end 진료시간-->
+            </div> <!-- end first_row -->
+
+        </div> <!-- end card-body-->
+    </div> <!-- end card-->
+
+    <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+        <div class="card-body flex-column align-items-start">
+
+            <div class="row">
+                <div class="col border-right">
+                    <h4 class="text-danger mt-3">특수진료</h4>
+                    <span>응급실: </span>{% if maininfo.emergency == 'Y' %}<span class="mr-5 text-success">가능</span>
+                    {%else%}<span class="mr-5 text-danger">불가능</span>{%endif%}
+                    <span>사지접합: </span>{% if maininfo.limbs == 'Y' %}<span class="mr-5 text-success">가능</span>
+                    {%else%}<span class="mr-5 text-danger">불가능</span>{%endif%}
+                    <span>조산산모: </span>{% if maininfo.pregnent == 'Y' %}<span class="mr-5 text-success">가능</span>
+                    {%else%}<span class="mr-5 text-danger">불가능</span>{%endif%}
+                    </br>
+                    <span>신생아: </span>{% if maininfo.newborn == 'Y' %}<span class="mr-5 text-success">가능</span>
+                    {%else%}<span class="mr-5 text-danger">불가능</span>{%endif%}
+                    <span>중증화상: </span>{% if maininfo.burn == 'Y' %}<span class="mr-5 text-success">가능</span>
+                    {%else%}<span class="mr-5 text-danger">불가능</span>{%endif%}
+                    <span>응급투석: </span>{% if maininfo.dialysis == 'Y' %}<span class="mr-5 text-success">가능</span>
+                    {%else%}<span class="mr-5 text-danger">불가능</span>{%endif%}
+                </div>
+
+                <div class="col">
+                    <h4 id="grade_header" class="text-success mt-3">병원등급</h4>
+                    <div class="row">
+                        <div class="col">
+                            <span class="text-info">위암: </span><img class="grade_img" src="{% static 'img/award.png' %}">
+                        </div>
+                        <div class="col">
+                            <span class="text-info">폐암: </span><img class="grade_img" src="{% static 'img/award.png' %}">
+                        </div>
+                        <div class="col">
+                            <span class="text-info">대장암: </span><img class="grade_img" src="{% static 'img/award.png' %}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <span class="text-info">간암: </span><img class="grade_img" src="{% static 'img/award.png' %}">
+                        </div>
+                        <div class="col">
+                            <span class="text-info">천식: </span><img class="grade_img" src="{% static 'img/award.png' %}">
+                        </div>
+                        <div class="col">
+                            <span class="text-info">대장암: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <span class="text-info">투석: </span><img class="grade_img" src="{% static 'img/award.png' %}">
+                        </div>
+                        <div class="col">
+                            <span class="text-info">당뇨병: </span><img class="grade_img" src="{% static 'img/award.png' %}">
+                        </div>
+                        <div class="col">
+                            <span class="text-info">고혈압: </span><img class="grade_img" src="{% static 'img/award.png' %}">
+                        </div>
+                    </div>
+
+                    <div class="row">
+                        <div class="col">
+                            <span class="text-info">제왕절개: </span><img class="grade_img" src="{% static 'img/award.png' %}">
+                        </div>
+                        <div class="col">
+                            <span class="text-info">항생제처방: </span><img class="grade_img" src="{% static 'img/award.png' %}">
+                        </div>
+                        <div class="col">
+                            <span class="text-info">주사처방: </span><img class="grade_img" src="{% static 'img/award.png' %}">
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div> <!-- end card-body-->
+    </div> <!-- end card-->
+{% endblock content %}
+
+{% block soruceAdd %}
+<script>
+var map = new naver.maps.Map('map', {
+        zoom: 10, //지도의 초기 줌 레벨
+        minZoom: 1, //지도의 최소 줌 레벨
+        zoomControl: true, //줌 컨트롤의 표시 여부
+        zoomControlOptions: { //줌 컨트롤의 옵션
+            position: naver.maps.Position.TOP_RIGHT
+        }
+});
+var position = new naver.maps.LatLng("{{ maininfo.lat }}", "{{ maininfo.lon }}"),
+    map = new naver.maps.Map('map', {
+        center: position,
+        zoom: 10
+    }),
+    marker = new naver.maps.Marker({
+        map: map,
+        position: position.destinationPoint(0, 500)
+    });
+
+var contentString = '<div class="card flex-md-row h-md-250">';
+    contentString += '<div class="card-body flex-column align-items-start">';
+    contentString += '<h4 class="mb-2"><a class="text-dark">{{ maininfo.name }}</a></h4>'; /*병원명*/
+    contentString += '<div class="text-info">주소: </div>';
+    contentString += '<div class="card-text">{{ maininfo.addr }}</div>';
+    contentString += '<div class="text-info">전화번호: </div>';
+    contentString += '<div class="card-text">{{ maininfo.tel }}</div>';
+    contentString += '</div></div>';
+
+var infowindow = new naver.maps.InfoWindow({
+    content: contentString
+});
+
+naver.maps.Event.addListener(marker, "click", function(e) {
+    if (infowindow.getMap()) {
+        infowindow.close();
+    } else {
+        infowindow.open(map, marker);
+    }
+});
+infowindow.open(map, marker);
+</script>
+<script src="{% static 'js/detail.js' %}"></script>
+<link rel="stylesheet" href="{% static 'css/detail.css' %}">
+{% endblock soruceAdd %}

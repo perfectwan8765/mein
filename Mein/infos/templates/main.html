@@ -1,0 +1,261 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% if main_list %}
+{% block content %}
+    <main role="main" class="container">
+      <div class="row">
+        <div class="col-md-9 blog-main">
+          <div class="border-bottom pb-2 mb-4">
+            <h3 class="d-inline mr-2">Hospital List</h3>
+            <h5 class="d-inline text-primary">
+              {% if topic %}
+              검색결과 : {{ topic }}-{{ keyword }}
+              {% else %}
+              서울 {% if region %}{{ region }}{% else %}강남구{% endif %}
+              {% endif %}
+            </h5>
+          </div>
+
+          {% for item in  main_list %}
+          <div class="card flex-md-row mb-4 shadow-sm h-md-250">
+            <div class="card-body flex-column align-items-start">
+
+                <h3 class="mb-2 d-inline" data-toggle="popover" data-trigger="hover" data-placement="right"
+               data-content="자세한 사항은 클릭~!">
+                  <a class="text-dark hs_title" href="{% url 'infos:detail' item.hpid %}">{{ item.name }}</a>
+                </h3>
+
+              <div class="row mt-2">
+                <div class="col border-right">
+                  <div class="text-info">진로과목: </div>
+                  <div class="card-text">{{ item.subject }}</div>
+                </div>
+                <div class="col">
+                  <div class="text-info">분류: </div>
+                  {% if item.div %}
+                  <div>{{ item.div }}</div>
+                  {% else %}
+                  <div>...</div>
+                  {% endif %}
+                  <div class="text-info">주소: </div>
+                  <div class="card-text">{{ item.addr }}</div>
+                  <div class="text-info">전화번호: </div>
+                  <div class="card-text">{{ item.tel }}</div>
+                </div>
+              </div> <!-- end row-->
+
+            </div> <!-- end card-body-->
+          </div> <!-- end card-->
+          {% endfor %}
+
+          <!-- pagination -->
+          {% if is_paginated %}
+          <nav class="blog-pagination" style="text-align:center;">
+            {% if page_obj.has_previous %}
+              {% if topic %}
+              <a class="btn btn-outline-default" href="?topic={{ topic }}&keyword={{ keyword }}&page={{ page_obj.previous_page_number}}"><<</a>
+              {% else %}
+              <a class="btn btn-outline-default" href="?page={{ page_obj.previous_page_number}}"><<</a>
+              {% endif %}
+            {% else %}
+            <a class="btn btn-outline-default"><<</a>
+            {% endif %}
+
+            {% for i in page_range %}
+              {% if page_obj.number == i %}
+              <a class="btn btn-outline-primary active">{{ i }}</a>
+              {% else %}
+                {% if topic %}
+                <a class="btn btn-outline-primary" href="?topic={{ topic }}&keyword={{ keyword }}&page={{i}}">{{ i }}</a>
+                {% else %}
+                <a class="btn btn-outline-primary" href="?page={{i}}">{{ i }}</a>
+                {% endif %}
+              {% endif %}
+            {% endfor %}
+
+            {% if page_obj.has_next %}
+              {% if topic %}
+              <a class="btn btn-outline-default" href="?topic={{ topic }}&keyword={{ keyword }}&page={{ page_obj.next_page_number}}">>></a>
+              {% else %}
+              <a class="btn btn-outline-default" href="?page={{ page_obj.next_page_number}}">>></a>
+              {% endif %}
+            {% else %}
+            <a class="btn btn-outline-default">>></a>
+            {% endif %}
+
+          </nav>
+          {% endif %}
+          <!--end pagination-->
+
+        </div><!-- /.blog-main -->
+
+        <aside class="col-md-3 blog-sidebar">
+
+          <!-- [about] Introduce our Project-->
+          <div class="p-3 mb-3 bg-light rounded">
+            <h4 class="font-italic">About</h4>
+            <p class="mb-0">
+              Welcome Mein Website!</br>
+              Mein project is the website providing medical information. This site provides information of Seoul's hospitals and pharmarcy.
+            </p>
+          </div>
+          <!-- end [about]-->
+
+          <!-- [checkbox_list_1] special treatment-->
+          <div class="p-3 bg-light">
+            <h4 class="text-danger" data-toggle="popover" data-trigger="hover" data-placement="top"
+               data-content="특수진료 가능한 병원만 보고싶으면 체크!">특수진료</h4>
+              <form>
+                <div class="row">
+                  <div class="col"><input class="mr-1" type="checkbox" id="emergency"/><label for="emergency">응급실</label></div>
+                  <div class="col"><input class="mr-1" type="checkbox" id="limbs"/><label for="limbs">사지접합</label></div>
+                </div>
+                <div class="row">
+                  <div class="col"><input class="mr-1" type="checkbox" id="newborn"/><label for="newborn">신생아</label></div>
+                  <div class="col"><input class="mr-1" type="checkbox" id="pregnant"/><label for="pregnant">조산산모</label></div>
+                </div>
+                <div class="row">
+                  <div class="col"><input class="mr-1" type="checkbox" id="burn"/><label for="burn">화상</label></div>
+                  <div class="col"><input class="mr-1" type="checkbox" id="dialysis"/><label for="dialysis">응급투석</label></div>
+                </div>
+              </form>
+          </div>
+          <!-- end [checkbox_list_1]-->
+
+          <!-- [checkbox_list_2] available holiday-->
+          <div class="mt-3 p-3 bg-light">
+            <h4 class="text-danger" data-toggle="popover" data-trigger="hover" data-placement="top"
+               data-content="휴일진료 가능한 병원만 보고싶으면 체크!">주말휴일진료</h4>
+            <ol class="list-unstyled mb-0">
+              <form>
+              <li><input class="mr-1" type="checkbox" id="saturday"/><label for="saturday">토요일</label></li>
+              <li><input class="mr-1" type="checkbox" id="sunday"/><label for="sunday">일요일</label></li>
+              <li><input class="mr-1" type="checkbox" id="holiday"/><label for="holiday">공휴일</label></li>
+              </form>
+            </ol>
+          </div>
+          <!-- end [checkbox_list_2]-->
+
+          <!-- [checkbox_list_3] available holiday-->
+          <div class="mt-3 p-3 bg-light">
+            <h4 class="text-danger" data-toggle="popover" data-trigger="hover" data-placement="top"
+               data-content="해당 진료과목 운영 병원만 보고싶으면 체크!">진료과목</h4>
+            <ol class="list-unstyled mb-0">
+              <form>
+              <li><input class="mr-1" type="checkbox" /><label>치과</label></li>
+              <li><input class="mr-1" type="checkbox" /><label >내과</label></li>
+              <li><input class="mr-1" type="checkbox" /><label >산부인과</label></li>
+              <li><input class="mr-1" type="checkbox" /><label >성형외과</label></li>
+              <li><input class="mr-1" type="checkbox" /><label >정형외과</label></li>
+              <li><input class="mr-1" type="checkbox" /><label >신경외과</label></li>
+              <li><input class="mr-1" type="checkbox" /><label >소아청소년과</label></li>
+              <li><input class="mr-1" type="checkbox" /><label >피부과</label></li>
+              <li><input class="mr-1" type="checkbox" /><label >안과</label></li>
+              <li><input class="mr-1" type="checkbox" /><label >정신건강의학과</label></li>
+              <li><input class="mr-1" type="checkbox" /><label >비뇨기과</label></li>
+              <li><input class="mr-1" type="checkbox" /><label >한방내과</label></li>
+              </form>
+            </ol>
+          </div>
+          <!-- end [checkbox_list_3]-->
+
+        </aside><!-- /.blog-sidebar -->
+
+      </div><!-- /.row -->
+
+    </main><!-- /.container -->
+{% endblock content %}
+{% else %}
+<h1>등록된 데이터가 없습니다.</h1>
+{% endif %}
+
+{% block soruceAdd %}
+<script>
+function getLocation() {
+  if (navigator.geolocation) { // GPS를 지원하면
+    navigator.geolocation.getCurrentPosition(function(position) {
+       localStorage.setItem('lat', position.coords.latitude);
+       localStorage.setItem('lon', position.coords.longitude);
+    }, function(error) {
+      console.error(error);
+    }, {
+      enableHighAccuracy: false,
+      maximumAge: 0,
+      timeout: Infinity
+    });
+  } else {
+    alert('GPS를 지원하지 않습니다');
+  }
+}
+getLocation();
+var map = new naver.maps.Map('map', {
+        zoom: 10, //지도의 초기 줌 레벨
+        minZoom: 1, //지도의 최소 줌 레벨
+        zoomControl: true, //줌 컨트롤의 표시 여부
+        zoomControlOptions: { //줌 컨트롤의 옵션
+            position: naver.maps.Position.TOP_RIGHT
+        }
+});
+var lat=0;
+var lon=0;
+{% for item in main_list %}
+    lat = lat + Number("{{ item.lat }}");
+    lon = lon + Number("{{ item.lon }}");
+{% endfor %}
+lat = lat/"{{main_list|length}}";
+lon = lon/"{{main_list|length}}";
+
+var position = new naver.maps.LatLng(lat, lon),
+    map = new naver.maps.Map('map', {
+        center: position,
+        zoom: 9
+});
+
+var marker = new naver.maps.Marker({
+       map: map,
+       position: new naver.maps.LatLng(localStorage.getItem("lat"), localStorage.getItem("lon")),
+  });
+  var infowindow = new naver.maps.InfoWindow({
+      content: '현재위치'
+    });
+
+   infowindow.open(map, marker);
+
+{% for item in main_list %}
+  var marker{{ forloop.counter}} = new naver.maps.Marker({
+        map: map,
+        position: new naver.maps.LatLng("{{ item.lat }}", "{{ item.lon }}"),
+        icon: {
+        content: '<img src="{% static 'img/marker_hs2.png' %}"' +
+                 'style="margin: 0px; padding: 0px; border: 0px solid transparent; display: block; max-width: none; max-height: none; ' +
+                 '-webkit-user-select: none; position: absolute; width: 25px; height: 25px;">',
+        size: new naver.maps.Size(22, 35),
+        anchor: new naver.maps.Point(11, 35)
+    }
+    });
+
+    var contentString{{ forloop.counter}} = [ '<div class="card flex-md-row h-md-250">',
+                                              '<div class="card-body flex-column align-items-start">',
+                                              '<h4 class="mb-2"><a class="text-dark">{{ item.name }}</a></h4>',
+                                              '<div class="text-info">주소: </div>',
+                                              '<div class="card-text">{{ item.addr }}</div>',
+                                              '<div class="text-info">전화번호: </div>',
+                                              '<div class="card-text">{{ item.tel }}</div>',
+                                              '</div></div>'].join('');
+
+    var infowindow{{ forloop.counter }} = new naver.maps.InfoWindow({
+      content: contentString{{ forloop.counter}}
+    });
+
+    naver.maps.Event.addListener(marker{{ forloop.counter }}, "click", function(e) {
+      if (infowindow{{ forloop.counter }}.getMap()) {
+          infowindow{{ forloop.counter }}.close();
+      } else {
+          infowindow{{ forloop.counter }}.open(map, marker{{ forloop.counter }});
+      }
+    });
+
+{% endfor %}
+</script>
+{% endblock soruceAdd %}
