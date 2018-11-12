@@ -41,10 +41,8 @@ class SubInfo(models.Model):
     holidayEnd = models.CharField(max_length=10, default='')
 
 class GradeInfo(models.Model):
-    name = models.CharField(max_length=100, default='')
+    hpid = models.ForeignKey(MainInfo, on_delete=models.CASCADE, default='')
     hurl = models.CharField(max_length=200, default='')
-    lat = models.FloatField(default=0)
-    lon = models.FloatField(default=0)
     highblood = models.IntegerField(default=0)
     lungCa = models.IntegerField(default=0)
     stomachCa = models.IntegerField(default=0)

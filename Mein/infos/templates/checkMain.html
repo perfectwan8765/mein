@@ -1,4 +1,32 @@
 {% extends 'main.html' %}
+{% load static %}
+
+{% block mapname %}
+      <h3 class="d-inline">
+        {% if topic %}
+        지도 검색키워드 : {{ keyword }}
+        {% elif sub %}
+        지도 검색키워드 : {{ sub }}
+        {% else %}
+        서울 {% if region %}{{ region }}{% else %}강남구{% endif %} 지역 지도
+        {% endif %}
+      </h3>
+      <div class="float-right"><img id="marker_info" src="{% static 'img/marker_hs2.png'%}"> 마커를 클릭하면 해당 병원정보를 볼 수 있습니다!</div>
+{% endblock mapname %}
+
+
+{% block listname %}
+            <h5 class="d-inline text-primary">
+              {% if topic %}
+              검색키워드 : {{ keyword }}
+              {% elif sub %}
+              검색키워드 : {{ sub }}
+              {% else %}
+              서울 {% if region %}{{ region }}{% else %}강남구{% endif %}
+              {% endif %}
+            </h5>
+{% endblock listname %}
+
 
 {% block pagination %}
         {% if is_paginated %}

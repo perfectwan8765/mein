@@ -30,7 +30,7 @@
             <span>Medical + Information</span>
           </div>
           <div class="col-4 text-center">
-            <h2><a class="blog-header-logo text-primary" href="#">Mein</a></h2>
+            <h2><a class="blog-header-logo text-primary" href="{% url 'infos:index' %}">Mein</a></h2>
           </div>
           <div class="col-4 d-flex justify-content-end align-items-center">
             <a class="text-muted" href="#" data-toggle="modal" data-target="#searchModal">
@@ -100,13 +100,13 @@
       <!--Main map-->
       {% block mapname %}
       <h3 class="d-inline">
-        {% if topic %}
-        검색결과 : {{ topic }}-{{ keyword }}
-        {% else %}
         서울 {% if region %}{{ region }}{% else %}강남구{% endif %} 지역 지도
-        {% endif %}
       </h3>
-      <div class="float-right"><img id="marker_info" src="{% static 'img/marker_hs2.png'%}"> 마커를 클릭하면 해당 병원정보를 볼 수 있습니다!</div>
+
+      <div class="float-right">
+        <i class="fas fa-map-marker-alt text-primary"></i><span class="mr-2">현재위치</span>
+        <img id="marker_info" src="{% static 'img/marker_hs2.png'%}"> 마커를 클릭하면 해당 병원정보를 볼 수 있습니다!
+      </div>
       {% endblock mapname %}
 
       <div id="map" class="mb-4 rounded" style="height:400px;">
@@ -118,8 +118,23 @@
 
     <footer class="blog-footer mt-4">
       <div class="jumbotron p-3 p-md-5 rounded">
-        <h3>Please Contact Us!!!!</h3>
-        <h4>This version is Seoul_1</h4>
+        <div class="row">
+          <div class="col">
+            <h5><i class="fas fa-map-marker-alt mr-2 mt-1"></i><span class="text-primary">서울특별시 서초구 서초1동 효령로 335</span></h5>
+            <h5><i class="fas fa-envelope mr-2 mt-2"></i><a href="mailto:perfectwan8765@gmail.com">perfectwan8765@gmail.com</a></h5>
+            <h5><i class="fab fa-github mr-2 mt-2"></i><a href="https://github.com/wjdtkddhks/mein.git" target="_blank"
+              >https://github.com/wjdtkddhks/mein</a></h5>
+          </div>
+          <div class="col">
+            <h4>About this version</h4>
+            <p class="mb-0">
+              Period : 2018.11.05~ </br>
+              Data_range : 서울 강남구, 서초구, 송파구, 종로구, 강서구 </br>
+              Function : Main, ListView, DetailView, Search, Selected keyword List </br>
+            </p>
+          </div>
+
+        </div>
       </div>
     </footer>
 

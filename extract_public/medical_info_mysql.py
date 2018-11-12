@@ -1,10 +1,6 @@
-import urllib.request as rq
-import urllib
-import datetime
 import json
 from itertools import count
 import pymysql
-import pandas as pd
 
 def update_json_file(file_name):
     jData = open(file_name, 'r', encoding='utf-8').read()
@@ -51,5 +47,6 @@ def save_date_mysql(jsonResult):
     print("database save")
 
 if __name__ == '__main__':
-    # update_json_file('medical_info_종로구.json')
+    print('start')
+    # update_json_file('')
     # get_json_file('medical_new_info_종로구.json')

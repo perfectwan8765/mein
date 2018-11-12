@@ -3,6 +3,7 @@ from .models import MainInfo, SubInfo, GradeInfo
 from django.views import generic
 from django.core.paginator import Paginator
 from django.db.models import Q
+
 # Create your views here.
 
 class IndexList(generic.ListView):
@@ -150,3 +151,5 @@ class DivList(generic.ListView):
         if self.request.GET.get('burn') : context['burn'] = self.request.GET.get('burn')
         if self.request.GET.get('dialysis') : context['dialysis'] = self.request.GET.get('dialysis')
         return context
+
+
