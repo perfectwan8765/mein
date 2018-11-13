@@ -14,6 +14,9 @@ class MainInfo(models.Model):
     lat = models.FloatField(default=0)
     lon = models.FloatField(default=0)
     addr = models.CharField(max_length=500, default='')
+
+class SpecialInfo(models.Model):
+    hpid = models.ForeignKey(MainInfo, on_delete=models.CASCADE)
     emergency = models.CharField(max_length=4, default='')
     limbs = models.CharField(max_length=4, default='')
     pregnent = models.CharField(max_length=4, default='')

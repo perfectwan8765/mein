@@ -9,18 +9,14 @@
 {% block mapname %}
     <h3 class="ml-3">{{ maininfo.name }} 위치</h3>
 {% endblock mapname %}
+{% block mapinfo %}{% endblock mapinfo %}
 
 {% block content %}
     <div class="card flex-md-row mb-4 shadow-sm h-md-250">
         <div class="card-body flex-column align-items-start">
-
             <h3 class="mb-2 mr-2 d-inline">{{ maininfo.name }}</h3>
-            {% if maininfo.gradeinfo_set.all %}
-            {% for item in maininfo.gradeinfo_set.all %}
-                {% if not item.hurl == ""%}
-                <a class="text-info btn btn-sm btn-outline-info" target="_blank" href="{{ item.hurl }}" >해당사이트</a>
-                {% endif %}
-            {% endfor %}
+            {% if maininfo.gradeinfo_set.get and not maininfo.gradeinfo_set.get.hurl == ""%}
+                <a class="text-info btn btn-sm btn-outline-info" target="_blank" href="{{ maininfo.gradeinfo_set.get.hurl }}" >해당사이트</a>
             {% endif %}
 
             <div class="row">
@@ -50,23 +46,23 @@
                     <div class="row">
                         <div class="col-5">
                             {% for sub in maininfo.subinfo_set.all %}
-                            <span class="mr-1">월요일</span>{% if sub.mondayStart %}{{ sub.mondayStart }}-{{ sub.mondayEnd}}
+                            <span class="mr-1">월요일</span>{% if sub.mondayStart %}{{ sub.mondayStart }}-{{ sub.mondayEnd }}
                             {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
-                            <span class="mr-1">화요일</span>{% if sub.tuesdayStart %}{{ sub.tuesdayStart }}-{{ sub.tuesdayEnd}}
+                            <span class="mr-1">화요일</span>{% if sub.tuesdayStart %}{{ sub.tuesdayStart }}-{{ sub.tuesdayEnd }}
                             {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
-                            <span class="mr-1">수요일</span>{% if sub.wednesdayStart %}{{ sub.wednesdayStart }}-{{ sub.wednesdayEnd}}
+                            <span class="mr-1">수요일</span>{% if sub.wednesdayStart %}{{ sub.wednesdayStart }}-{{ sub.wednesdayEnd }}
                             {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
-                            <span class="mr-1">목요일</span>{% if sub.thursdayStart %}{{ sub.thursdayStart }}-{{ sub.thursdayEnd}}
+                            <span class="mr-1">목요일</span>{% if sub.thursdayStart %}{{ sub.thursdayStart }}-{{ sub.thursdayEnd }}
                             {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
-                            <span class="mr-1">금요일</span>{% if sub.fridayStart %}{{ sub.fridayStart }}-{{ sub.fridayEnd}}
+                            <span class="mr-1">금요일</span>{% if sub.fridayStart %}{{ sub.fridayStart }}-{{ sub.fridayEnd }}
                             {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
                         </div>
                         <div class="col-7">
-                            <span class="mr-1">토요일</span>{% if sub.saturdayStart %}{{ sub.saturdayStart }}-{{ sub.saturdayEnd}}
+                            <span class="mr-1">토요일</span>{% if sub.saturdayStart %}{{ sub.saturdayStart }}-{{ sub.saturdayEnd }}
                             {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
-                            <span class="mr-1">일요일</span>{% if sub.sundayStart %}{{ sub.sundayStart }}-{{ sub.sundayEnd}}
+                            <span class="mr-1">일요일</span>{% if sub.sundayStart %}{{ sub.sundayStart }}-{{ sub.sundayEnd }}
                             {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
-                            <span class="mr-1">공휴일</span>{% if sub.holidayStart %}{{ sub.holidayStart }}-{{ sub.holidayEnd}}
+                            <span class="mr-1">공휴일</span>{% if sub.holidayStart %}{{ sub.holidayStart }}-{{ sub.holidayEnd }}
                             {% else %} <span class="text-danger">미운영</span> {% endif %}</br>
                             {% endfor %}
                         </div>
@@ -88,29 +84,29 @@
                     <h4 class="text-danger mt-3">특수진료</h4>
                     <div class="row">
                         <div class="col">
-                            <span>응급실: </span>{% if maininfo.emergency == 'Y' %}<span class="text-success">가능</span>
+                            <span>응급실: </span>{% if maininfo.specialinfo_set.get.emergency == 'Y' %}<span class="text-success">가능</span>
                             {%else%}<span class="text-danger">불가능</span>{%endif%}
                         </div>
                         <div class="col">
-                            <span>사지접합: </span>{% if maininfo.limbs == 'Y' %}<span class="text-success">가능</span>
+                            <span>사지접합: </span>{% if maininfo.specialinfo_set.get.limbs == 'Y' %}<span class="text-success">가능</span>
                             {%else%}<span class="text-danger">불가능</span>{%endif%}
                         </div>
                         <div class="col">
-                            <span>조산산모: </span>{% if maininfo.pregnent == 'Y' %}<span class="text-success">가능</span>
+                            <span>조산산모: </span>{% if maininfo.specialinfo_set.get.pregnent == 'Y' %}<span class="text-success">가능</span>
                             {%else%}<span class="text-danger">불가능</span>{%endif%}
                         </div>
                     </div>
                     <div class="row">
                         <div class="col">
-                            <span>신생아: </span>{% if maininfo.newborn == 'Y' %}<span class="text-success">가능</span>
+                            <span>신생아: </span>{% if maininfo.specialinfo_set.get.newborn == 'Y' %}<span class="text-success">가능</span>
                             {%else%}<span class="text-danger">불가능</span>{%endif%}
                         </div>
                         <div class="col">
-                            <span>중증화상: </span>{% if maininfo.burn == 'Y' %}<span class="text-success">가능</span>
+                            <span>중증화상: </span>{% if maininfo.specialinfo_set.get.burn == 'Y' %}<span class="text-success">가능</span>
                             {%else%}<span class="text-danger">불가능</span>{%endif%}
                         </div>
                         <div class="col">
-                            <span>응급투석: </span>{% if maininfo.dialysis == 'Y' %}<span class="text-success">가능</span>
+                            <span>응급투석: </span>{% if maininfo.specialinfo_set.get.dialysis == 'Y' %}<span class="text-success">가능</span>
                             {%else%}<span class="text-danger">불가능</span>{%endif%}
                         </div>
                     </div>
@@ -118,74 +114,23 @@
 
                 <div class="col">
                     <h4 id="grade_header" class="text-success mt-3">병원등급</h4>
-                    {% if not maininfo.gradeinfo_set.all %}
-                    <div class="row">
-                        <div class="col">
-                            <span class="text-info">위암: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
-                        </div>
-                        <div class="col">
-                            <span class="text-info">폐암: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
-                        </div>
-                        <div class="col">
-                            <span class="text-info">대장암: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col">
-                            <span class="text-info">간암: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
-                        </div>
-                        <div class="col">
-                            <span class="text-info">천식: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
-                        </div>
-                        <div class="col">
-                            <span class="text-info">유방암: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col">
-                            <span class="text-info">투석: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
-                        </div>
-                        <div class="col">
-                            <span class="text-info">당뇨병: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
-                        </div>
-                        <div class="col">
-                            <span class="text-info">고혈압: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
-                        </div>
-                    </div>
-
-                    <div class="row">
-                        <div class="col">
-                            <span class="text-info">제왕절개: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
-                        </div>
-                        <div class="col">
-                            <span class="text-info">항생제처방: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
-                        </div>
-                        <div class="col">
-                            <span class="text-info">주사처방: </span><img class="grade_img" src="{% static 'img/exception.png' %}">
-                        </div>
-                    </div>
-
-                    {% else %}
-                    {% for grade in maininfo.gradeinfo_set.all %}
                     <div class="row">
                         <div class="col">
                             <span class="text-info">위암: </span>
-                            {% if grade.stomachCa == 0 %}
+                            {% if not maininfo.gradeinfo_set.get or maininfo.gradeinfo_set.get.stomachCa == 0 %}
                             <img class="grade_img" src="{% static 'img/exception.png' %}">
                             {% else %}
-                                {% for c in 0|range:grade.stomachCa %}
+                                {% for c in 0|range:maininfo.gradeinfo_set.get.stomachCa %}
                                 <img class="grade_img" src="{% static 'img/award.png' %}">
                                 {% endfor %}
                             {% endif %}
                         </div>
                         <div class="col">
                              <span class="text-info">폐암: </span>
-                            {% if grade.lungCa == 0 %}
+                            {% if not maininfo.gradeinfo_set.get or maininfo.gradeinfo_set.get.lungCa == 0 %}
                             <img class="grade_img" src="{% static 'img/exception.png' %}">
                             {% else %}
-                                {% for c in 0|range:grade.lungCa %}
+                                {% for c in 0|range:maininfo.gradeinfo_set.get.lungCa %}
                                 <img class="grade_img" src="{% static 'img/award.png' %}">
                                 {% endfor %}
                             {% endif %}
@@ -194,20 +139,20 @@
                     <div class="row">
                         <div class="col">
                             <span class="text-info">대장암: </span>
-                            {% if grade.bowelCa == 0 %}
+                            {% if not maininfo.gradeinfo_set.get or maininfo.gradeinfo_set.get.bowelCa == 0 %}
                             <img class="grade_img" src="{% static 'img/exception.png' %}">
                             {% else %}
-                                {% for c in 0|range:grade.bowelCa %}
+                                {% for c in 0|range:maininfo.gradeinfo_set.get.bowelCa %}
                                 <img class="grade_img" src="{% static 'img/award.png' %}">
                                 {% endfor %}
                             {% endif %}
                         </div>
                         <div class="col">
                             <span class="text-info">간암: </span>
-                            {% if grade.liverCa == 0 %}
+                            {% if not maininfo.gradeinfo_set.get or maininfo.gradeinfo_set.get.liverCa == 0 %}
                             <img class="grade_img" src="{% static 'img/exception.png' %}">
                             {% else %}
-                                {% for c in 0|range:grade.liverCa %}
+                                {% for c in 0|range:maininfo.gradeinfo_set.get.liverCa %}
                                 <img class="grade_img" src="{% static 'img/award.png' %}">
                                 {% endfor %}
                             {% endif %}
@@ -216,20 +161,20 @@
                     <div class="row">
                         <div class="col">
                             <span class="text-info">천식: </span>
-                            {% if grade.asthma == 0 %}
+                            {% if not maininfo.gradeinfo_set.get or maininfo.gradeinfo_set.get.asthma == 0 %}
                             <img class="grade_img" src="{% static 'img/exception.png' %}">
                             {% else %}
-                                {% for c in 0|range:grade.asthma %}
+                                {% for c in 0|range:maininfo.gradeinfo_set.get.asthma %}
                                 <img class="grade_img" src="{% static 'img/award.png' %}">
                                 {% endfor %}
                             {% endif %}
                         </div>
                         <div class="col">
                             <span class="text-info">투석: </span>
-                            {% if grade.dialysis == 0 %}
+                            {% if not maininfo.gradeinfo_set.get or maininfo.gradeinfo_set.get.dialysis == 0 %}
                             <img class="grade_img" src="{% static 'img/exception.png' %}">
                             {% else %}
-                                {% for c in 0|range:grade.dialysis %}
+                                {% for c in 0|range:maininfo.gradeinfo_set.get.dialysis %}
                                 <img class="grade_img" src="{% static 'img/award.png' %}">
                                 {% endfor %}
                             {% endif %}
@@ -238,20 +183,20 @@
                     <div class="row">
                         <div class="col">
                             <span class="text-info">당뇨병: </span>
-                            {% if grade.diabetes == 0 %}
+                            {% if not maininfo.gradeinfo_set.get or maininfo.gradeinfo_set.get.diabetes == 0 %}
                             <img class="grade_img" src="{% static 'img/exception.png' %}">
                             {% else %}
-                                {% for c in 0|range:grade.diabetes %}
+                                {% for c in 0|range:maininfo.gradeinfo_set.get.diabetes %}
                                 <img class="grade_img" src="{% static 'img/award.png' %}">
                                 {% endfor %}
                             {% endif %}
                         </div>
                         <div class="col">
                             <span class="text-info">고혈압: </span>
-                            {% if grade.highblood == 0 %}
+                            {% if not maininfo.gradeinfo_set.get or maininfo.gradeinfo_set.get.highblood == 0 %}
                             <img class="grade_img" src="{% static 'img/exception.png' %}">
                             {% else %}
-                                {% for c in 0|range:grade.highblood %}
+                                {% for c in 0|range:maininfo.gradeinfo_set.get.highblood %}
                                 <img class="grade_img" src="{% static 'img/award.png' %}">
                                 {% endfor %}
                             {% endif %}
@@ -260,20 +205,20 @@
                     <div class="row">
                         <div class="col">
                             <span class="text-info">제왕절개: </span>
-                            {% if grade.cesarean == 0 %}
+                            {% if not maininfo.gradeinfo_set.get or maininfo.gradeinfo_set.get.cesarean == 0 %}
                             <img class="grade_img" src="{% static 'img/exception.png' %}">
                             {% else %}
-                                {% for c in 0|range:grade.cesarean %}
+                                {% for c in 0|range:maininfo.gradeinfo_set.get.cesarean %}
                                 <img class="grade_img" src="{% static 'img/award.png' %}">
                                 {% endfor %}
                             {% endif %}
                         </div>
                         <div class="col">
                             <span class="text-info">유방암: </span>
-                            {% if grade.breastCa == 0 %}
+                            {% if not maininfo.gradeinfo_set.get or maininfo.gradeinfo_set.get.breastCa == 0 %}
                             <img class="grade_img" src="{% static 'img/exception.png' %}">
                             {% else %}
-                                {% for c in 0|range:grade.breastCa %}
+                                {% for c in 0|range:maininfo.gradeinfo_set.get.breastCa %}
                                 <img class="grade_img" src="{% static 'img/award.png' %}">
                                 {% endfor %}
                             {% endif %}
@@ -282,28 +227,26 @@
                     <div class="row">
                         <div class="col">
                             <span class="text-info">항생제처방: </span>
-                            {% if grade.antibiotics == 0 %}
+                            {% if not maininfo.gradeinfo_set.get or maininfo.gradeinfo_set.get.antibiotics == 0 %}
                             <img class="grade_img" src="{% static 'img/exception.png' %}">
                             {% else %}
-                                {% for c in 0|range:grade.antibiotics %}
+                                {% for c in 0|range:maininfo.gradeinfo_set.get.antibiotics %}
                                 <img class="grade_img" src="{% static 'img/award.png' %}">
                                 {% endfor %}
                             {% endif %}
                         </div>
                         <div class="col">
                             <span class="text-info">주사제처방: </span>
-                            {% if grade.injection == 0 %}
+                            {% if not maininfo.gradeinfo_set.get or maininfo.gradeinfo_set.get.injection == 0 %}
                             <img class="grade_img" src="{% static 'img/exception.png' %}">
                             {% else %}
-                                {% for c in 0|range:grade.injection %}
+                                {% for c in 0|range:maininfo.gradeinfo_set.get.injection %}
                                 <img class="grade_img" src="{% static 'img/award.png' %}">
                                 {% endfor %}
                             {% endif %}
                         </div>
-                    </div>
-                    {% endfor %}
-                    {% endif %}
-                </div>
+                    </div> <!-- end row -->
+                </div> <!-- end 병워등급 -->
             </div>
         </div> <!-- end card-body-->
     </div> <!-- end card-->

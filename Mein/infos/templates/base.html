@@ -1,5 +1,5 @@
 {% load static %}
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
   <head>
     <meta charset="utf-8">
@@ -22,7 +22,6 @@
   </head>
 
   <body>
-
     <div class="container">
       <header class="blog-header py-3">
         <div class="row flex-nowrap justify-content-between align-items-center">
@@ -83,12 +82,33 @@
               <h5 class="modal-title">Region List</h5>
             </div>
             <div class="modal-body">
-              <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '강남구' %}" >서울 강남구</a>
-              <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '서초구' %}" >서울 서초구</a>
-              <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '송파구' %}" >서울 송파구</a>
-              <a class="btn btn-outline-secondary mb-2 mb-2" href="{% url 'infos:list' '종로구' %}" >서울 종로구</a>
-              <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '강서구' %}" >서울 강서구</a>
-            </div>
+              <div class="row">
+                <div class="col-3 border-right">
+                  <div class="nav flex-column nav-pills" role="tablist" aria-orientation="vertical">
+                    <a class="nav-link active" data-toggle="pill" href="#seoul_list" role="tab" >서울</a>
+                    <a class="nav-link" data-toggle="pill" href="#incheon_list" role="tab" >인천</a>
+                    <a class="nav-link" data-toggle="pill" href="#v-pills-messages" role="tab" >경기도</a>
+                    <a class="nav-link" data-toggle="pill" href="#v-pills-settings" role="tab" >충청도</a>
+                  </div>
+                </div>
+                <div class="col-9">
+                  <div class="tab-content">
+                    <div class="tab-pane fade show active" id="seoul_list" role="tabpanel">
+                      <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '강남구' %}" >서울 강남구</a>
+                      <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '서초구' %}" >서울 서초구</a>
+                      <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '송파구' %}" >서울 송파구</a>
+                      <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '종로구' %}" >서울 종로구</a>
+                      <a class="btn btn-outline-secondary mr-2 mb-2" href="{% url 'infos:list' '강서구' %}" >서울 강서구</a>
+                    </div>
+                    <div class="tab-pane fade" id="incheon_list" role="tabpanel">
+                      <a class="btn btn-outline-secondary mr-2 mb-2" href="#" >인천 계양구</a>
+                      <a class="btn btn-outline-secondary mr-2 mb-2" href="#" >인천 남구</a>
+                    </div>
+                  </div> <!-- div.tap-content -->
+                </div> <!-- div.col-9 -->
+              </div> <!-- div.row -->
+            </div> <!-- modal-body -->
+
             <div class="modal-footer">
               <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
             </div>
@@ -102,12 +122,15 @@
       <h3 class="d-inline">
         서울 {% if region %}{{ region }}{% else %}강남구{% endif %} 지역 지도
       </h3>
-
+      {% endblock mapname %}
+      {% block mapinfo %}
       <div class="float-right">
-        <i class="fas fa-map-marker-alt text-primary"></i><span class="mr-2">현재위치</span>
+        <i class="fas fa-map-marker-alt text-primary mr-1" style="font-size:22px;"></i>
+        <span class="mr-2" style="font-size:107%;">현재위치</span>
         <img id="marker_info" src="{% static 'img/marker_hs2.png'%}"> 마커를 클릭하면 해당 병원정보를 볼 수 있습니다!
       </div>
-      {% endblock mapname %}
+      {% endblock %}
+
 
       <div id="map" class="mb-4 rounded" style="height:400px;">
       </div>
@@ -116,28 +139,29 @@
     {% block content %}
     {% endblock content %}
 
-    <footer class="blog-footer mt-4">
-      <div class="jumbotron p-3 p-md-5 rounded">
-        <div class="row">
-          <div class="col">
-            <h5><i class="fas fa-map-marker-alt mr-2 mt-1"></i><span class="text-primary">서울특별시 서초구 서초1동 효령로 335</span></h5>
-            <h5><i class="fas fa-envelope mr-2 mt-2"></i><a href="mailto:perfectwan8765@gmail.com">perfectwan8765@gmail.com</a></h5>
-            <h5><i class="fab fa-github mr-2 mt-2"></i><a href="https://github.com/wjdtkddhks/mein.git" target="_blank"
-              >https://github.com/wjdtkddhks/mein</a></h5>
-          </div>
-          <div class="col">
-            <h4>About this version</h4>
-            <p class="mb-0">
-              Period : 2018.11.05~ </br>
-              Data_range : 서울 강남구, 서초구, 송파구, 종로구, 강서구 </br>
-              Function : Main, ListView, DetailView, Search, Selected keyword List </br>
-            </p>
-          </div>
+      <footer class="blog-footer mt-4">
+        <div class="jumbotron p-3 p-md-5 rounded">
+          <div class="row">
+            <div class="col">
+              <h5><i class="fas fa-map-marker-alt mr-2 mt-1"></i><span class="text-primary">서울특별시 서초구 서초1동 효령로 335</span></h5>
+              <h5><i class="fas fa-envelope mr-2 mt-2"></i><a href="mailto:perfectwan8765@gmail.com">perfectwan8765@gmail.com</a></h5>
+              <h5><i class="fab fa-github mr-2 mt-2"></i><a href="https://github.com/wjdtkddhks/mein.git" target="_blank"
+                >https://github.com/wjdtkddhks/mein</a></h5>
+            </div>
+            <div class="col">
+              <h4>About this version</h4>
+              <p class="mb-0">
+                Period : 2018.11.05~ </br>
+                Data_range : 서울 강남구, 서초구, 송파구, 종로구, 강서구 </br>
+                Function : Main, ListView, DetailView, Search, Selected keyword List </br>
+              </p>
+            </div>
 
+          </div>
         </div>
-      </div>
-    </footer>
+      </footer>
 
+    </div> <!-- end container -->
     <!-- Bootstrap core JavaScript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->

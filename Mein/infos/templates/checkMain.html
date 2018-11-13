@@ -5,13 +5,12 @@
       <h3 class="d-inline">
         {% if topic %}
         지도 검색키워드 : {{ keyword }}
-        {% elif sub %}
-        지도 검색키워드 : {{ sub }}
+        {% elif sub or day or spec %}
+        지도 검색키워드 : {{ sub|default_if_none:"" }} {{ day|default_if_none:"" }} {{ spec|default_if_none:"" }}
         {% else %}
         서울 {% if region %}{{ region }}{% else %}강남구{% endif %} 지역 지도
         {% endif %}
       </h3>
-      <div class="float-right"><img id="marker_info" src="{% static 'img/marker_hs2.png'%}"> 마커를 클릭하면 해당 병원정보를 볼 수 있습니다!</div>
 {% endblock mapname %}
 
 
@@ -19,8 +18,8 @@
             <h5 class="d-inline text-primary">
               {% if topic %}
               검색키워드 : {{ keyword }}
-              {% elif sub %}
-              검색키워드 : {{ sub }}
+              {% elif sub or day or spec %}
+              검색키워드 : {{ sub|default_if_none:"" }} {{ day|default_if_none:"" }} {{ spec|default_if_none:"" }}
               {% else %}
               서울 {% if region %}{{ region }}{% else %}강남구{% endif %}
               {% endif %}
@@ -33,7 +32,7 @@
           <nav class="blog-pagination" style="text-align:center;">
             {% if page_obj.has_previous %}
               <a class="btn btn-outline-default"
-                 href="?page={{ page_obj.previous_page_number}}{% if sub %}&sub={{ sub }}{% endif %}"><<</a>
+                 href="?page={{ page_obj.previous_page_number}}{% if day %}&day={{ day }}{% endif %}{% if spec %}&spec={{ spec }}{% endif %}{% if sub %}&sub={{ sub }}{% endif %}"><<</a>
             {% else %}
             <a class="btn btn-outline-default"><<</a>
             {% endif %}
@@ -42,12 +41,12 @@
               {% if page_obj.number == i %}
               <a class="btn btn-outline-primary active">{{ i }}</a>
               {% else %}
-                <a class="btn btn-outline-primary" href="?page={{i}}{% if sub %}&sub={{ sub }}{% endif %}">{{ i }}</a>
+                <a class="btn btn-outline-primary" href="?page={{i}}{% if day %}&day={{ day }}{% endif %}{% if spec %}&spec={{ spec }}{% endif %}{% if sub %}&sub={{ sub }}{% endif %}">{{ i }}</a>
               {% endif %}
             {% endfor %}
 
             {% if page_obj.has_next %}
-              <a class="btn btn-outline-default" href="?page={{ page_obj.next_page_number}}{% if sub %}&sub={{ sub }}{% endif %}">>></a>
+              <a class="btn btn-outline-default" href="?page={{ page_obj.next_page_number}}{% if day %}&day={{ day }}{% endif %}{% if spec %}&spec={{ spec }}{% endif %}{% if sub %}&sub={{ sub }}{% endif %}">>></a>
             {% else %}
             <a class="btn btn-outline-default">>></a>
             {% endif %}
